@@ -38,25 +38,20 @@ func (b *OsImageBuilderInNode) sanitizeCommand(cmd string) string {
 
 // OsImageBuilderInNode encapsulates the functionality to build custom osImages inside a cluster node
 type OsImageBuilderInNode struct {
-	// Caller-provided configuration
-	node               *Node
-	dockerFileCommands string // Dockerfile body (excluding FROM line, which is computed)
-	dockerConfig       string // Local docker config path; auto-generated from pull-secret if empty
-
-	// Caller-settable options
-	UseInternalRegistry bool
-	BuildAsManifest     bool // If true, build as manifest; if false, build as single image
-
-	// Internal state (populated by prepareEnvironment)
-	baseImage          string
-	osImage            string
-	tmpDir             string
-	remoteTmpDir       string
-	remoteDockerConfig string
-	remoteDockerfile   string
-	httpProxy          string
-	httpsProxy         string
-	noProxy            string
+	node *Node
+	baseImage,
+	osImage,
+	dockerFileCommands, // Full docker file but the "FROM basOsImage..." that will be calculated
+	dockerConfig,
+	httpProxy,
+	httpsProxy,
+	noProxy,
+	tmpDir,
+	remoteTmpDir,
+	remoteDockerConfig,
+	remoteDockerfile string
+	UseInternalRegistry,
+	BuildAsManifest bool // If true, build as manifest; if false, build as single image
 }
 
 func (b *OsImageBuilderInNode) proxyEnvPrefix() string {
